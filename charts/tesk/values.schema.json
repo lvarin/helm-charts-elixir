@@ -1,9 +1,32 @@
 {
-  "$schema": "http://json-schema.org/schema#",
-  "type": "object",
-  "required": [
-    "host_name"
-  ],
-  "properties": {
-  }
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "host_name": {
+            "type": "string",
+            "description": "Host name"
+            }
+        },
+        "clusterType": {
+            "description": "Type of cluster, openshift or kubernetes",
+            "type": "object",
+            "enum": ["openshift", "kubernetes"]
+        },
+        "storageClass": {
+            "description": "Configurable storage class",
+            "type": "string"
+        },
+        "tesk": {
+            "properties": {
+              "image": {
+                "description": "TESK image",
+                "default": "docker.io/elixircloud/tesk-api:1.1.0"
+              },
+              "debug": {
+                "description": "Activate debug log",
+                "type": "boolean",
+                "default": false
+              }
+            }
+        }
 }
