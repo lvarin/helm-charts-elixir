@@ -3,6 +3,18 @@ entries:
   tesk:
   - apiVersion: v2
     appVersion: dev
+    created: "2023-12-19T14:00:04.003227684Z"
+    description: A TESK-EXILIR Helm chart for Kubernetes
+    digest: 8a061b374ad4e7d126457bedfaadac0b9fa3931a3fa47312380308e6e95fcdc7
+    name: tesk
+    sources:
+    - https://github.com/elixir-cloud-aai/tesk
+    type: application
+    urls:
+    - https://github.com/lvarin/helm-charts-elixir/releases/download/tesk-0.1.5/tesk-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: dev
     created: "2023-12-19T13:16:36.952411879Z"
     description: A TESK-EXILIR Helm chart for Kubernetes
     digest: b3566382ac2932c84056749074312cb7ce6758acf2ebdb3e25d38fe9a23d3081
@@ -55,4 +67,4 @@ entries:
     urls:
     - https://github.com/CSCfi/helm-charts-elixir/releases/download/tesk-0.1.0/tesk-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-19T13:16:36.952436595Z"
+generated: "2023-12-19T14:00:04.003258481Z"
