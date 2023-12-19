@@ -5,11 +5,10 @@
         "host_name": {
             "type": "string",
             "description": "Host name"
-            }
         },
         "storageClass": {
             "description": "Configurable storage class",
-            "type": "string"
+            "type": ["string", "null"]
         },
         "tesk": {
             "properties": {
@@ -23,4 +22,5 @@
               }
             }
         }
+    }
 }
