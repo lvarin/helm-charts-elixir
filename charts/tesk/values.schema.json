@@ -1,26 +1,216 @@
 {
-    "$schema": "http://json-schema.org/schema#",
-    "type": "object",
-    "properties": {
-        "host_name": {
-            "type": "string",
-            "description": "Host name"
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "host_name": {
+      "type": "string"
+    },
+    "clusterType": {
+      "type": "string"
+    },
+    "storage": {
+      "type": "string"
+    },
+    "storageClass": {
+      "type": ["string", "null"]
+    },
+    "tesk": {
+      "type": "object",
+      "properties": {
+        "tes_api_base_path": {
+          "type": "string"
         },
-        "storageClass": {
-            "description": "Configurable storage class",
-            "type": ["string", "null"]
+        "image": {
+          "type": "string"
         },
-        "tesk": {
-            "properties": {
-              "image": {
-                "description": "TESK image",
-                "type": "string"
-              },
-              "debug": {
-                "description": "Activate debug log",
-                "type": "boolean"
-              }
-            }
+        "port": {
+          "type": "integer"
+        },
+        "taskmaster_image_name": {
+          "type": "string"
+        },
+        "taskmaster_image_version": {
+          "type": "string"
+        },
+        "taskmaster_filer_image_name": {
+          "type": "string"
+        },
+        "taskmaster_filer_image_version": {
+          "type": "string"
+        },
+        "debug": {
+          "type": "boolean"
+        },
+        "executor_retries": {
+          "type": "integer"
+        },
+        "filer_retries": {
+          "type": "integer"
         }
+      },
+      "required": [
+        "debug",
+        "executor_retries",
+        "filer_retries",
+        "image",
+        "port",
+        "taskmaster_filer_image_name",
+        "taskmaster_filer_image_version",
+        "taskmaster_image_name",
+        "taskmaster_image_version",
+        "tes_api_base_path"
+      ]
+    },
+    "transfer": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "wes_base_path": {
+          "type": "string"
+        },
+        "tes_base_path": {
+          "type": "string"
+        },
+        "pvc_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "active",
+        "pvc_name",
+        "tes_base_path",
+        "wes_base_path"
+      ]
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "env_subgroup": {
+          "type": "string"
+        },
+        "env_basegroup": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "env_basegroup",
+        "env_subgroup",
+        "mode"
+      ]
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "node_port": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_port",
+        "type"
+      ]
+    },
+    "ftp": {
+      "type": "object",
+      "properties": {
+        "classic_ftp_secret": {
+          "type": "null"
+        },
+        "netrc_secret": {
+          "type": "string"
+        },
+        "hostip": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "netrc_secret"
+      ]
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "tls_secret_name": {
+          "type": "null"
+        },
+        "annotations": {
+          "type": "object",
+          "properties": {
+            "kubernetes.io/ingress.class": {
+              "type": "string"
+            },
+            "kubernetes.io/tls-acme": {
+              "type": "string"
+            },
+            "cert-manager.io/cluster-issuer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cert-manager.io/cluster-issuer",
+            "kubernetes.io/ingress.class",
+            "kubernetes.io/tls-acme"
+          ]
+        },
+        "deploy_ingress": {
+          "type": "object",
+          "properties": {
+            "active": {
+              "type": "boolean"
+            },
+            "nginx_image": {
+              "type": "string"
+            },
+            "external_ip": {
+              "type": "string"
+            },
+            "node_port": {
+              "type": "integer"
+            },
+            "scope": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "active",
+            "external_ip",
+            "nginx_image",
+            "node_port",
+            "scope"
+          ]
+        }
+      },
+      "required": [
+        "active",
+        "annotations",
+        "deploy_ingress",
+        "path"
+      ]
     }
+  },
+  "required": [
+    "auth",
+    "clusterType",
+    "ftp",
+    "host_name",
+    "ingress",
+    "service",
+    "storage",
+    "tesk",
+    "transfer"
+  ]
 }
