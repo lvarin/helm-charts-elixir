@@ -9,7 +9,7 @@
         },
         "clusterType": {
             "description": "Type of cluster, openshift or kubernetes",
-            "type": "object",
+            "type": "string",
             "enum": ["openshift", "kubernetes"]
         },
         "storageClass": {
