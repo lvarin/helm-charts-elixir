@@ -7,11 +7,6 @@
             "description": "Host name"
             }
         },
-        "clusterType": {
-            "description": "Type of cluster, openshift or kubernetes",
-            "type": "string",
-            "enum": ["openshift", "kubernetes"]
-        },
         "storageClass": {
             "description": "Configurable storage class",
             "type": "string"
@@ -20,12 +15,11 @@
             "properties": {
               "image": {
                 "description": "TESK image",
-                "default": "docker.io/elixircloud/tesk-api:1.1.0"
+                "type": "string"
               },
               "debug": {
                 "description": "Activate debug log",
-                "type": "boolean",
-                "default": false
+                "type": "boolean"
               }
             }
         }
