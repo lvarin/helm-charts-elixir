@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  cwlwes:
+  - apiVersion: v2
+    appVersion: dev
+    created: "2023-12-20T14:01:34.704630014Z"
+    description: A cwl-WES Helm chart for Kubernetes
+    digest: 741a987c19c5bb09580cff121ab500ea9526e8b7e465802b4afc1087511d91cf
+    name: cwlwes
+    type: application
+    urls:
+    - https://github.com/lvarin/helm-charts-elixir/releases/download/cwlwes-0.1.0/cwlwes-0.1.0.tgz
+    version: 0.1.0
   tesk:
   - apiVersion: v2
     appVersion: dev
@@ -79,4 +90,4 @@ entries:
     urls:
     - https://github.com/CSCfi/helm-charts-elixir/releases/download/tesk-0.1.0/tesk-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-19T14:38:02.63515673Z"
+generated: "2023-12-20T14:01:34.704652326Z"
