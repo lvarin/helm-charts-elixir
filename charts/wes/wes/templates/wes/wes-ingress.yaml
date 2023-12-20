@@ -1,0 +1,150 @@
+---
+{{ if ne .Values.clusterType "kubernetes" }} # assume OpenShift, for k8s is wes-ingress-kubernetes.yaml
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.wes.appName }}
+spec:
+  host: {{ .Values.wes.appName }}.{{ .Values.applicationDomain }}
+  to:
+    kind: Service
+    weight: 100
+    name: {{ .Values.wes.appName }}
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  path: "/ga4gh/wes/v1"
+status: 
+  ingress: []
+{{ end }}
+
+### Autocert-bot
+{{ if eq .Values.autocert.createJob "true" }} # Create autocert system
+
+{{ if eq .Values.clusterType "openshift" }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.wes.appName }}-certbot
+spec:
+  host: {{ .Values.wes.appName }}.{{ .Values.applicationDomain }}
+  path: "/.well-known"
+  port:
+    targetPort: 8080
+  to:
+    kind: ""
+    name: {{ .Values.wes.appName }}-certbot
+    weight: 100
+status:
+  ingress: []
+{{ end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.wes.appName }}-certbot
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    parent: {{ .Values.wes.appName }}-certbot
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+---
+{{ if ne .Values.clusterType "kubernetes" }}
+apiVersion: batch/v1beta1
+{{ else }}
+apiVersion: batch/v1
+{{ end }}
+kind: CronJob
+metadata:
+  name: {{ .Values.wes.appName }}-certbot
+spec:
+  schedule: {{ .Values.autocert.schedule | quote }}
+  jobTemplate:
+    metadata:
+      labels:
+        parent: {{ .Values.wes.appName }}-certbot
+    spec:
+      template:
+        metadata:
+          labels:
+            parent: {{ .Values.wes.appName }}-certbot
+        spec:
+          containers:
+          - name: certbot
+            image: {{ .Values.autocert.image }}
+            imagePullPolicy: Always
+            env:
+            {{- if eq .Values.autocert.testCert "true" }}
+            - name: TESTCERT
+              value: "--test-cert"
+            {{- end }}
+            {{- if eq .Values.clusterType "openshift" }}
+            - name: ROUTE
+              value: {{ .Values.wes.appName }}
+            {{- end }}
+            - name: APISERVER
+              value: {{ .Values.autocert.apiServer }}
+            - name: EMAIL
+              value: {{ .Values.autocert.email }}
+            - name: DOMAINS
+              value: {{ .Values.wes.appName }}.{{ .Values.applicationDomain }}
+            - name: SECRET
+              value: {{ .Values.tlsSecret }}
+          restartPolicy: OnFailure
+          serviceAccountName: {{ .Values.wes.appName }}-autoadmin
+status: {}
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.wes.appName }}-certbot
+spec:
+  template:
+    metadata:
+      labels:
+        parent: {{ .Values.wes.appName }}-certbot
+    spec:
+      containers:
+      - name: certbot
+        image: {{ .Values.autocert.image }}
+        imagePullPolicy: Always
+        env:
+        {{- if eq .Values.autocert.testCert "true" }}
+        - name: TESTCERT
+          value: "--test-cert"
+        {{- end }}
+        {{- if eq .Values.clusterType "openshift" }}
+        - name: ROUTE
+          value: {{ .Values.wes.appName }}
+        {{- end }}
+        - name: APISERVER
+          value: {{ .Values.autocert.apiServer }}
+        - name: EMAIL
+          value: {{ .Values.autocert.email }}
+        - name: DOMAINS
+          value: {{ .Values.wes.appName }}.{{ .Values.applicationDomain }}
+        - name: SECRET
+          value: {{ .Values.tlsSecret }}
+      restartPolicy: OnFailure
+      serviceAccountName: {{ .Values.wes.appName }}-autoadmin
+status: {}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.tlsSecret }}
+type: Opaque
+
+{{ end }} # Create autocert system
+

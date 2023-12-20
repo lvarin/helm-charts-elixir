@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.mongodb.appName }}-volume
+spec:
+  accessModes:
+    - {{ .Values.storageAccessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.mongodb.volumeSize }}
+
